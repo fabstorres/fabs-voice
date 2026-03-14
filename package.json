@@ -10,6 +10,9 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "effect": "^3.19.19"
+    "@effect/platform": "^0.94.5",
+    "@effect/platform-bun": "^0.87.1",
+    "effect": "^3.19.19",
+    "mic": "^2.1.2"
   }
 }

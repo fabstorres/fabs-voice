@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { createRequire } from "node:module";
 
 import * as FileSystem from "@effect/platform/FileSystem";
+import * as Path from "@effect/platform/Path";
 import { Effect, Layer } from "effect";
 
 import { Microphone, MicrophoneError } from "./service";
@@ -139,13 +140,17 @@ export const MicrophoneLive = Layer.effect(
   Microphone,
   Effect.gen(function* () {
     const fileSystem = yield* FileSystem.FileSystem;
+    const path = yield* Path.Path;
 
     return {
       saveAndRecordPlayback: () =>
         Effect.gen(function* () {
-          yield* fileSystem.makeDirectory("./tmp", { recursive: true });
+          const outputPath = path.resolve("./tmp", `${randomUUID()}.wav`);
 
-          const outputPath = `./tmp/${randomUUID()}.wav`;
+          yield* fileSystem.makeDirectory(path.dirname(outputPath), {
+            recursive: true,
+          });
+
           return yield* recordToPath(fileSystem, outputPath);
         }).pipe(Effect.mapError(() => new MicrophoneError())),
     };

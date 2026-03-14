@@ -10,8 +10,7 @@ const program = Effect.gen(function* () {
   const microphone = yield* Microphone;
   const whisper = yield* Whisper;
   const outputPath = yield* microphone.saveAndRecordPlayback();
-  const uuid = outputPath.replace(/^\.\/tmp\//, "").replace(/\.wav$/, "");
-  const transcription = yield* whisper.wavOutput(uuid);
+  const transcription = yield* whisper.wavOutput(outputPath);
 
   yield* Effect.log(`Recording saved to ${outputPath}`);
   yield* Effect.log(`Transcription: ${transcription}`);

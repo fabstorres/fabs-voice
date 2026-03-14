@@ -18,7 +18,7 @@ export type WhisperError =
   | WhisperUnknownError;
 
 export interface IWhisper {
-  readonly wavOutput: (uuid: string) => Effect.Effect<string, WhisperError>;
+  readonly wavOutput: (wavPath: string) => Effect.Effect<string, WhisperError>;
 }
 
 export class Whisper extends Context.Tag("Whisper")<Whisper, IWhisper>() {}

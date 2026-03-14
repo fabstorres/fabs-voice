@@ -10,8 +10,6 @@ import {
   WhisperWavNotFound,
 } from "./service";
 
-const toWavPath = (uuid: string) => `./tmp/${uuid}.wav`;
-
 const isNotFoundError = (
   error: unknown,
 ): error is {
@@ -63,9 +61,7 @@ export const WhisperLive = Layer.effect(
     const fileSystem = yield* FileSystem.FileSystem;
 
     return {
-      wavOutput: (uuid: string) => {
-        const wavPath = toWavPath(uuid);
-
+      wavOutput: (wavPath: string) => {
         return fileSystem.access(wavPath).pipe(
           Effect.mapError((error) => {
             if (isNotFoundError(error)) {

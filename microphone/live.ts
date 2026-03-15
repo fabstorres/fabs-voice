@@ -29,6 +29,8 @@ const mic = micModule as unknown as (
   options?: Record<string, unknown>,
 ) => MicInstance;
 
+const silenceFramesBeforeStop = 12;
+
 const detachListener = (
   stream: MicAudioStream,
   event: string,
@@ -76,7 +78,7 @@ const recordToPath = (fileSystem: FileSystem.FileSystem, outputPath: string) =>
       channels: "1",
       device: "default",
       fileType: "wav",
-      exitOnSilence: 4,
+      exitOnSilence: silenceFramesBeforeStop,
     });
 
     const audioStream = micInstance.getAudioStream();
@@ -151,7 +153,14 @@ export const MicrophoneLive = Layer.effect(
             recursive: true,
           });
 
-          return yield* recordToPath(fileSystem, outputPath);
+          yield* Effect.log("Recording started...");
+          yield* Effect.log("Waiting for a longer pause before stopping...");
+
+          const recordedPath = yield* recordToPath(fileSystem, outputPath);
+
+          yield* Effect.log("Recording stopped.");
+
+          return recordedPath;
         }).pipe(Effect.mapError(() => new MicrophoneError())),
     };
   }),

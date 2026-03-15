@@ -10,6 +10,9 @@ Whisper installation instructions: [openai/whisper](https://github.com/openai/wh
 
 Make sure `whisper` is installed and available on your `PATH` before running the app.
 
+This app also expects the grammar-cleaning model `GRMR-2B-Instruct-Q4_K_M.gguf` to be present in `model/`.
+Download it from Hugging Face and place it at `model/GRMR-2B-Instruct-Q4_K_M.gguf` before running the app.
+
 To install dependencies:
 
 ```bash
